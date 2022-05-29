@@ -1,9 +1,11 @@
 import React from "react"
 import Sidebar from "./components/Sidebar"
 import Editor from "./components/Editor"
-import { data } from "./data"
+// import { data } from "./data"
 import Split from "react-split"
 import {nanoid} from "nanoid"
+
+const initalMessage = "# Type your markdown note's title here"
 
 export default function App() {
     // localStorage.clear();
@@ -14,12 +16,14 @@ export default function App() {
 
     React.useEffect(()=>{
       localStorage.setItem('notes',JSON.stringify(notes))
+
     },[notes])
     
     function createNewNote() {
         const newNote = {
             id: nanoid(),
-            body: "# Type your markdown note's title here"
+            body: initalMessage,
+            url: getURL(initalMessage)
         }
         setNotes(prevNotes => [newNote, ...prevNotes])
         setCurrentNoteId(newNote.id)
@@ -30,7 +34,10 @@ export default function App() {
         const newArray = [];
         for(let i = 0; i < oldNotes.length; i++){
           if( oldNotes[i].id === currentNoteId ){
-            newArray.unshift({...oldNotes[i], body: text});
+            const newUrl = getURL(text);
+            // const file = new Blob([text],{type:'text/plain'});
+            // const newUrl = URL.createObjectURL(file);
+            newArray.unshift({...oldNotes[i], body: text, url: newUrl});
           }
           else {
             newArray.push(oldNotes[i]);
@@ -39,13 +46,6 @@ export default function App() {
 
         return newArray;
       })
-
-
-        // setNotes(oldNotes => oldNotes.map(oldNote => {
-        //     return oldNote.id === currentNoteId
-        //         ? { ...oldNote, body: text }
-        //         : oldNote
-        // }))
     }
     
     function findCurrentNote() {
@@ -66,6 +66,13 @@ export default function App() {
       newArr.splice(index,1);
       setNotes(newArr);
     }
+
+    function getURL(text) {
+      const file = new Blob([text],{type:'text/plain'});
+      const newUrl = URL.createObjectURL(file);
+
+      return newUrl;
+    }
     
     return (
         <main>
@@ -83,6 +90,7 @@ export default function App() {
                     setCurrentNoteId={setCurrentNoteId}
                     newNote={createNewNote}
                     delete={handleDelete}
+                    // download={handleDownload}
                 />
                 {
                     currentNoteId && 

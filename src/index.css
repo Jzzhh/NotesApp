@@ -139,21 +139,22 @@ button:focus {
   background-color: whitesmoke;
 }
 
-.delete-btn {
-  display: none;
+.delete-btn, .download-btn {
+  /* display: none; */
+  /* justify-self: flex-end; */
   background: none;
   border: none;
 }
 
-.title:hover > .delete-btn {
+.title:hover > .delete-btn, .download-btn {
   display: block;
 }
 
-.trash-icon {
+.delete-icon, .download-icon {
   cursor: pointer;
 }
 
-.gg-trash {
+/* .gg-trash {
     box-sizing: border-box;
     position: relative;
     display: block;
@@ -196,4 +197,16 @@ button:focus {
     border-top-right-radius: 2px;
     top: -7px;
     left: -2px
+} */
+
+.download-icon, .delete-icon {
+  font-size: 20px;
+}
+
+.icon-container {
+  display: flex;
+}
+
+.selected-note .icon{
+  color: white;
 }

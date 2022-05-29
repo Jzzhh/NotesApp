@@ -1,4 +1,5 @@
 import React from "react"
+import {AiOutlineDelete, AiOutlineDownload} from "react-icons/ai"
 
 export default function Sidebar(props) {
     const noteElements = props.notes.map((note, index) => {
@@ -13,12 +14,22 @@ export default function Sidebar(props) {
                 onClick={() => props.setCurrentNoteId(note.id)}
             >
                 <h4 className="text-snippet">{title}</h4>
-                <button 
-                    className="delete-btn"
-                    onClick={(event) => props.delete(event,note.id)}
-                >
-                    <i className="gg-trash trash-icon"></i>
-                </button>
+                <div className="icon-container">
+                    <a href={note.url} download={`${title}.md`}>
+                        <button
+                            className="download-btn"
+                            // onClick={(event) => props.download(event,note.id)}    
+                        >
+                            <AiOutlineDownload className="download-icon icon"/>
+                        </button>
+                    </a>
+                    <button 
+                        className="delete-btn"
+                        onClick={(event) => props.delete(event,note.id)}
+                    >
+                        <AiOutlineDelete className="delete-icon icon"/>
+                    </button>
+                </div>
             </div>
         </div>
     )})
